@@ -1,0 +1,27 @@
+public class Solution {
+    public int findRadius(int[] houses, int[] heaters) {
+        if (houses == null || heaters == null){
+            return 0;
+        }
+        if (houses.length == 0 || heaters.length == 0){
+            return 0;
+        }
+   
+        Arrays.sort(heaters);
+        int result = Integer.MIN_VALUE;
+        
+        
+        for (int house : houses){
+            int index = Arrays.binarySearch(heaters, house);
+            if (index < 0) index = -(index + 1);
+            int pos1 = index == 0 ? Integer.MAX_VALUE : house - heaters[index - 1];
+            int pos2 = index == heaters.length ? Integer.MAX_VALUE : heaters[index] - house;
+            result = Math.max(result, Math.min(pos1, pos2));
+        }   
+        return result;  
+    }
+}
+
+tag : binary search
+summary: find location of house in the array of heaters, calculate the minimum distance between the front heater and the 
+         later heater.
