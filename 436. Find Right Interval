@@ -1,0 +1,67 @@
+/**
+ * Definition for an interval.
+ * public class Interval {
+ *     int start;
+ *     int end;
+ *     Interval() { start = 0; end = 0; }
+ *     Interval(int s, int e) { start = s; end = e; }
+ * }
+ */
+public class Solution {
+    public int[] findRightInterval(Interval[] intervals) {
+        
+        if (intervals == null || intervals.length == 0){
+            return null;
+        }
+        
+        HashMap<Interval, Integer> map = new HashMap<Interval, Integer>();
+        
+        for (int i = 0; i < intervals.length; i++){
+            map.put(intervals[i], i);
+        }
+        
+        Arrays.sort(intervals, new intervalComparator());
+        int result[] = new int[intervals.length];
+        
+        for (int i = 0; i < intervals.length; i++){
+            Interval index = binarysearch(intervals, intervals[i].end);
+            if (index == null){
+                result[map.get(intervals[i])] = -1;
+            }else{
+                result[map.get(intervals[i])] = map.get(index);
+            }
+        }
+        
+        return result;
+        
+    }
+    
+    private class intervalComparator implements Comparator<Interval>{
+        public int compare(Interval a, Interval b){
+            return a.start - b.start;
+        }
+    }
+    
+    private Interval binarysearch(Interval[] intervals, int target){
+        
+        int sta = 0;
+        int en = intervals.length - 1;
+        if (intervals[intervals.length - 1].start < target){
+            return null;
+        }
+        
+        while (sta + 1 < en){
+            int mid = sta + (en - sta)/2;
+            if (intervals[mid].start < target){
+                sta = mid;
+            }else{
+                en = mid;
+            }
+        }
+        return intervals[sta].start > target ? intervals[sta] : intervals[en];
+    }
+}
+
+tags: HashMap, sort, binary search
+summary: Use HashMap to sotre the original index of interval. Then override method compare to compare two intervals according
+         to their value of start. Use binary search to find the minimum start of one end. Time complexity O(nlogn).
