@@ -1,0 +1,50 @@
+public class Solution {
+    public int minArea(char[][] image, int x, int y) {
+        
+        if (image == null || image.length == 0){
+            return 0;
+        }
+        if (image[x][y] != '1'){
+            return 0;
+        }
+        
+        int row = image.length;
+        int column = image[0].length;
+        int left = binarysearch(image, 0, y, 0, row, true, true);
+        int right = binarysearch(image, y + 1, column, 0, row, true, false);
+        int up = binarysearch(image, 0, x, left, right, false, true);
+        int down = binarysearch(image, x + 1, row, left, right, false, false);
+        
+        return (right - left) * (down - up);
+    }
+    
+    private int binarysearch(char[][] image, int bound1, int bound2, int min, int max, boolean searchHo, boolean searchLo){
+        
+        int start = bound1;
+        int end = bound2;
+        boolean hasBLK = false;
+        
+        while (start < end){
+            int mid = start + (end - start)/2;
+            hasBLK = false;
+            for (int i = min; i < max; i++){
+                char k = searchHo ? image[i][mid] : image[mid][i];
+                if (k == '1'){
+                    hasBLK = true;
+                    break;
+                }
+            }
+            if (hasBLK == searchLo){
+                end = mid;
+            }else{
+                start = mid + 1;
+            }
+        }
+        
+        return start;
+    }
+}
+
+tags: binary search
+summary: Find the minimum area of the rectangle. Time complexity is O(nlogn). Given a coordination pair(x, y), map the black
+         pixels into the row y or column x. Use binary search to find the first 1 and the last 1 in matrix.
