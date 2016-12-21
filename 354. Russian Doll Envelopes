@@ -29,4 +29,4 @@ public class Solution {
 
 tags: dynamic programing, binary search
 summary: Override compare method to sort matrix. Use width increasing order and heights decreasing order. Use similar method
-         to find LIS of the second element.
+         to find LIS of the second element. Time complexity O(nlogn).
