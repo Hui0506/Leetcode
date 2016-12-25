@@ -1,0 +1,39 @@
+public class Solution {
+    public boolean isSubsequence(String s, String t) {
+        
+        if (t == null && s != null){
+            return false;
+        }
+        if (s == null || s.length() == 0){
+            return true;
+        }
+        if (s.length() == t.length() && s.length() == 0){
+            return true;
+        }
+        if (s.length() > t.length()){
+            return false;
+        }
+        
+       int si = 0;
+       int ti = 0;
+       char sc = s.charAt(0);
+       
+       for (ti = 0; ti < t.length(); ti++){
+           char tc = t.charAt(ti);
+           if (tc == sc){
+               si++;
+               if (si >= s.length()){
+                   return true;
+               }
+               sc = s.charAt(si);
+           }
+       }
+       
+       return false;
+    }
+}
+
+tags: traverse
+summary: Time complexity O(n), n is the length of String s. We loop from the first element of s to the last element of s. When 
+         meet with the identical letter in t. Move the index of t to the next letter. At last, if finish the traverse of t,   
+         return true. Otherwist, false.
