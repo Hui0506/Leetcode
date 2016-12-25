@@ -1,0 +1,64 @@
+public class Solution {
+    public int splitArray(int[] nums, int m) {
+        
+        if (nums == null || nums.length == 0){
+            return 0;
+        }
+        
+        long max = 0;
+        long sum = 0;
+        for (int i = 0; i < nums.length; i++){
+            sum += nums[i];
+            max = Math.max(max, nums[i]);
+        }
+        if (m == 1){
+            return (int)sum;
+        }
+        if (m == nums.length){
+            return (int)max;
+        }
+        
+        
+        return (int)binarysearch(nums, max, sum, m);
+    }
+    
+    private long binarysearch(int[] nums, long max, long sum, int m){
+        
+        long start = max;
+        long end = sum;
+        
+        while (start < end){
+            long mid = start + (end - start)/2;
+            if (isValid(nums, mid, m)){
+                end = mid;
+            }else{
+                start = mid + 1;
+            }
+        }
+        
+        return end;
+    }
+    
+    private boolean isValid(int[] nums, long mid, int m){
+        
+        long pre = 0;
+        int count = 1;
+        for (int num : nums){
+            pre += num;
+            if (pre > mid){
+                pre = num;
+                count++;
+                if (count > m){
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+}
+
+tags: binary search
+summary: Time complexity O(nlogm), m is the difference between the sum of all values and the largest value in the array. n is 
+         is the number of elements in array. We set the sum as the target to proceed binary search. We have another function to
+         check under this sum value, whether can the array be separated to less than m subarrays.
