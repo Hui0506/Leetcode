@@ -1,0 +1,53 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public List<TreeNode> generateTrees(int n) {
+        
+        if (n <= 0){
+            return new ArrayList<TreeNode>();
+        }
+        
+        return genTree(1, n);
+    }
+    
+    private List<TreeNode> genTree(int start, int end){
+        
+        List<TreeNode> list = new ArrayList<TreeNode>();
+        
+        if (start > end){
+            list.add(null);
+            return list;
+        }
+        if (start == end){
+            list.add(new TreeNode(start));
+            return list;
+        }
+        
+        List<TreeNode> left, right;        
+        for (int i = start; i <= end; i++){
+            left = genTree(start, i - 1);
+            right = genTree(i + 1, end);
+            for (TreeNode lnode : left){
+                for (TreeNode rnode : right){
+                    TreeNode root = new TreeNode(i);
+                    root.left = lnode;
+                    root.right = rnode;
+                    list.add(root);
+                }
+            }
+        }
+        return list;
+        
+    }
+}
+
+tags: Divide and Conquer, Dynamic Progamming
+summary: Time Complexity O(n^(n - 1)). There are two lists used to stored left and right trees. For each value, generate   
+         tree rooted at this value.  
