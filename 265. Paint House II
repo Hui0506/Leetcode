@@ -1,0 +1,42 @@
+public class Solution {
+    public int minCostII(int[][] costs) {
+        if (costs == null || costs.length == 0){
+            return 0;
+        }
+        
+        int row = costs.length;
+        int column = costs[0].length;
+        int dp[][] = new int[row][column];
+        
+        for (int j = 0; j < column; j++){
+            dp[0][j] = costs[0][j];
+        }
+        
+        for (int i = 1; i < row; i++){
+            for (int j = 0; j < column; j++){
+                dp[i][j] = Integer.MAX_VALUE;
+                for (int k = 0; k < column; k++){
+                    if (k == j){
+                        continue;
+                    }
+                    dp[i][j] = Math.min(dp[i - 1][k], dp[i][j]);
+                }
+                dp[i][j] += costs[i][j];
+            }
+        }
+        
+        int min = dp[row - 1][0];
+        
+        for (int i = 1; i < column; i++){
+            min = Math.min(min, dp[row - 1][i]);
+        }
+        
+        return min;
+    }
+}
+
+tags: Dynamic Programming
+summary: Time complexity O(nk^2). It can be optimized. For the inner loop, stored two values each time. One of which is the 
+         minimum value and the second value is the second minimum value. For the minumum value, if set the same color, we get
+         second value, otherwise we set minumum value. And substitute the minumum value and second value. Optimization time
+         complexity is O(nk).
