@@ -1,0 +1,25 @@
+public class Solution {
+    public List<Integer> grayCode(int n) {
+        
+        List<Integer> list = new ArrayList<Integer>();
+        if (n < 0){
+            return list;
+        }
+        list.add(0);
+        int base = 1;
+        
+        for (int i = 0; i < n; i++){
+            int index = list.size() - 1;
+            while (index >= 0){
+                int target = list.get(index--);
+                list.add(target + base);
+            }
+            base = base << 1;
+        }
+        
+        return list;
+    }
+}
+
+tags: bit calculating
+summary: Answer is periodic depend on the interval. Base is calculated by the power of 2. Time complexity is O(n).
