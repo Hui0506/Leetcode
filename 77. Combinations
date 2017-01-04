@@ -1,0 +1,31 @@
+public class Solution {
+    
+    List<List<Integer>> result = new ArrayList<List<Integer>>();
+    
+    public List<List<Integer>> combine(int n, int k) {
+        
+        if (k > n){
+            return result;
+        }
+        
+        List<Integer> list = new ArrayList<Integer>();
+        helper(n, k, 1, list);
+        return result;
+    }
+    private void helper(int n, int k, int index, List<Integer> list){
+
+        if (list.size() == k){
+            result.add(new ArrayList<Integer>(list));
+            return;
+        }
+        
+        for (int i = index; i <= n; i++){
+            list.add(i);
+            helper(n, k, i + 1, list);
+            list.remove(list.size() - 1);
+        }
+    }
+}
+
+tags: backtracking
+summary: Use backtracking, the combination is increasing to avoid duplicate elements. Time Complexity is O(n!)
