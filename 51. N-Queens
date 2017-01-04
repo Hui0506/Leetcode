@@ -1,0 +1,59 @@
+public class Solution {
+    public List<List<String>> solveNQueens(int n) {
+        
+        List<List<String>> result = new ArrayList<List<String>>();
+        if (n <= 0){
+            return result;
+        }
+        
+        boolean record[][] = new boolean[n][n];
+        helper(record, 0, result);
+        
+        return result;
+    }
+    private void helper(boolean[][] record, int index, List<List<String>> result){
+        
+        if (index == record.length){
+            List<String> list = new ArrayList<String>();
+            for (int i = 0; i < record.length; i++){
+                char ch[] = new char[record.length];
+                for (int j = 0; j < record.length; j++){
+                    if (record[i][j]) ch[j] = 'Q';
+                    else ch[j] = '.';
+                }
+                list.add(new String(ch));
+            }
+            result.add(list);
+            return;
+        }
+        
+        for (int j = 0; j < record.length; j++){
+            if (isValid(record, index, j)){
+                record[index][j] = true;
+                helper(record, index + 1, result);
+                record[index][j] = false;
+            }
+        }
+    }
+    private boolean isValid(boolean[][] record, int i, int j){
+        for (int x = 0; x < i; x++){
+            if(record[x][j]){
+                return false;
+            }
+        }
+        for (int x = 1; x <= i && x <= j; x++){
+            if (record[i - x][j - x]){
+                return false;
+            }
+        }
+        for (int x = 1; x + j < record.length && x <= i; x++){
+            if (record[i - x][j + x]){
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+tags: backtracking
+summary: Classic backtracking problem. Use method of exhausting. Check if it is valid at each time. Time complexity O(n!)
