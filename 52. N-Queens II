@@ -1,0 +1,50 @@
+public class Solution {
+    int result = 0;
+    public int totalNQueens(int n) {
+        if (n <= 0){
+            return 0;
+        }
+        
+        boolean record[][] = new boolean[n][n];
+        helper(record, 0);
+        
+        return result;
+        
+    }
+    private void helper(boolean[][] record, int index){
+        
+        if (index == record.length){
+            result++;
+            return;
+        }
+        
+        for (int j = 0; j < record.length; j++){
+            if (isValid(record, index, j)){
+                record[index][j] = true;
+                helper(record, index + 1);
+                record[index][j] = false;
+            }
+        }
+    }
+    private boolean isValid(boolean[][] record, int i, int j){
+        for (int x = 0; x < i; x++){
+            if (record[x][j]){
+                return false;
+            }
+        }
+        for (int x = 1; x <= i && x <= j; x++){
+            if (record[i - x][j - x]){
+                return false;
+            }
+        }
+        for (int x = 1; x <= i && x + j < record.length; x++){
+            if (record[i - x][j + x]){
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+tags: backtracking
+summary: Classic backtracking problem. If it is not valid, return to the last step. Time complexity O(n!)
