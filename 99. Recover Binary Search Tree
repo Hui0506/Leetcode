@@ -1,0 +1,44 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    
+    TreeNode first = null;
+    TreeNode second = null;
+    TreeNode pre = new TreeNode(Integer.MIN_VALUE);
+    public void recoverTree(TreeNode root) {
+        
+        inorder(root);
+        
+        int temp = first.val;
+        first.val = second.val;
+        second.val = temp;
+        
+    }
+    private void inorder(TreeNode root){
+        if (root == null){
+            return;
+        }
+        
+        inorder(root.left);
+        if (first == null && pre.val >= root.val){
+            first = pre;
+        }
+        if (first != null && pre.val >= root.val){
+            second = root;
+        }
+        pre = root;
+        inorder(root.right);
+    }
+}
+
+tags: BFS
+summary: Find out the inorder sequence of the tree. Two nodes need to switched should violate the increasing rule of inorder
+         sequence. Find these two nodes, the first node and the second node should be changed. Each recursion should record
+         two treenodes, the current treenode and the pre treenode.
